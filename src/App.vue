@@ -48,7 +48,13 @@ export default {
     },
     buttonReset() {
       //reset
-      this.words = wordJson.words.sort(() => Math.random() - Math.random()).slice(0, 10);
+      this.words = wordJson.words_en.sort(() => Math.random() - Math.random()).slice(0, 10);
+      this.$nextTick(() => {
+        this.$refs.WordComponent.forEach(component => {
+          component.$forceUpdate();
+          component.isChecked = false;
+        });
+      });
     },
     //event to update inputDict when changed inside WordComponent
     updateInputDict(key, new_letter) {

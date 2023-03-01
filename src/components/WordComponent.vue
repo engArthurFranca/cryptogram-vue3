@@ -3,12 +3,11 @@
     <div class="dsc">
       {{ dsc }}
     </div>
-    <div class="input-container" v-for="(letter, index) in input_word" :key="index">
+    <div class="input-container" v-for="(_, index) in input_word" :key="index">
       <span class="input-group-addon"><i :class="cryptoDict[ [...word][index] ]"></i></span>
       <input 
         v-model="input_word[index]"
-        :tabIndex="index + 1"
-        @keydown="changeLetter($event.key.toUpperCase(), index); $event.preventDefault()"
+        @keydown.prevent="changeLetter($event.key.toUpperCase(), index)"
         ref="inputField"
         type="text" 
         maxlength="1" 
