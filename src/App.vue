@@ -8,6 +8,7 @@
       :cryptoDict="cryptoDict"
       :inputDict="inputDict"
       @keyPressed="updateInputDict"
+      ref="WordComponent"
     ></WordComponent>
     <div>
       <button type="button" class="btn btn-light btn-lg border" @click="buttonCheck"> Check </button>
@@ -20,8 +21,13 @@
 import { reactive } from 'vue'
 
 import WordComponent from './components/WordComponent.vue';
-import wordJson from './words_en.json';
-let words = wordJson.words.sort(() => Math.random() - Math.random()).slice(0, 10);
+import wordJson from './assets/words.json';
+
+import createCryptoDict from './utils/cryptoDict.js';
+
+
+//choose 10 random elements from the wordJson
+const words = wordJson.words_en.sort(() => Math.random() - Math.random()).slice(0, 10);
 
 export default {
   name: 'App',
@@ -35,51 +41,25 @@ export default {
   },
   methods: {
     buttonCheck() {
-      //reset
-      this.words = wordJson.words.sort(() => Math.random() - Math.random()).slice(0, 10);
+      //verify which answer is right or wrong in components
+      this.$refs.WordComponent.forEach((component) => {
+        component.checkInputWord();
+      });
     },
     buttonReset() {
       //reset
       this.words = wordJson.words.sort(() => Math.random() - Math.random()).slice(0, 10);
     },
-    updateInputDict(key, letter) {
-      this.inputDict[key] = letter;
+    //event to update inputDict when changed inside WordComponent
+    updateInputDict(key, new_letter) {
+      this.inputDict[key] = new_letter;
     }
   },
   setup() {
-    let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
-    icons = [
-      "fas fa-laugh",
-      "fas fa-heart",
-      "fas fa-star",
-      "fas fa-bolt",
-      "fas fa-flag",
-      "fas fa-bell",
-      "fas fa-trophy",
-      "fas fa-sun",
-      "fas fa-bookmark",
-      "fas fa-shopping-cart",
-      "fas fa-user",
-      "fas fa-circle",
-      "fas fa-caret-down",
-      "fas fa-caret-left",
-      "fas fa-caret-right",
-      "fas fa-arrow-up",
-      "fas fa-arrow-down",
-      "fas fa-chevron-up",
-      "fas fa-chevron-down",
-      "fas fa-chevron-left",
-      "fas fa-chevron-right",
-      "fas fa-robot",
-      "fas fa-skull",
-      "fas fa-tshirt",
-      "fas fa-umbrella-beach",
-      "fas fa-moon"
-    ].sort(() => Math.random() -0.5),
-    cryptoDict = Object.fromEntries(alphabet.map((letter, i) => [letter, icons[i]])),
-    inputDict = Object.fromEntries(alphabet.map((letter) => [letter, '']));
-
-    inputDict = reactive(inputDict);
+    //create a Dictionary with the alphabet as keys and empty string as values
+    //making it reactive to be listened by child sibilings when changed
+    const inputDict = reactive(Object.fromEntries([..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"].map((letter) => [letter, ''])));
+    const cryptoDict = createCryptoDict();
 
     return { cryptoDict, inputDict }
   }
