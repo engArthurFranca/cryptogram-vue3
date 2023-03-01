@@ -40,5 +40,17 @@
     "last 2 versions",
     "not dead",
     "not ie 11"
-  ]
+  ],
+  "description": "A Cryptogram game created in vue3",
+  "main": "babel.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/engArthurFranca/cryptogram-vue3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/engArthurFranca/cryptogram-vue3/issues"
+  },
+  "homepage": "https://github.com/engArthurFranca/cryptogram-vue3#readme"
 }
